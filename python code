@@ -1,0 +1,21 @@
+import requests
+
+from lxml import etree
+
+headers = {
+    'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
+    'Cookie':'BDqhfp=apple%20tree%26%26NaN-1undefined%26%260%26%261; BIDUPSID=B55414B7D397F4079180F0B6D6E7F6DE; PSTM=1719303918; BAIDUID=B55414B7D397F407C7875AACD0B71BFB:FG=1; H_PS_PSSID=60336_60352; BAIDUID_BFESS=B55414B7D397F407C7875AACD0B71BFB:FG=1; ZFY=TGWJ:BEd7FJ0z8cacoLXJO1eolHGIjopuYS5tOBVx2Pk:C; BDRCVFR[vLkkRoBO9lC]=gV_8DarnsInIvN_UAq-QhPEUf; BA_HECTOR=0gag2ha4a525258k2501ah2l8av6ta1j84dab1u; delPer=0; PSINO=1; BDORZ=FFFB88E999055A3F8A630C64834BD6D0; BDRCVFR[dG2JNJb_ajR]=mk3SLVN4HKm; userFrom=www.baidu.com; ab_sr=1.0.1_NzQxZGZkNTFjMmY5MWZiOTFiYThhZTJlODlkYWU1NmE0YzFhMmQ2ZmZkMjM5ZmEyNGFiZTk0ZjA3ZTg3ZWZiNDM2ZjFlZTk2OThmMTI0YzkyODhhODFiNzM5MTczOWJmM2Y3NGQ0MGEzZmFlOTU0OTVhOGM0OGZlNWNlMWZhM2ZjNzA5ZDMyNjE0MzQ3YWYxNzdlYWUxNWFjMTE0OGMwNA==; BDRCVFR[-pGxjrCMryR]=mk3SLVN4HKm',
+    'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7'
+}
+
+url = 'https://image.baidu.com/search/index?tn=baiduimage&ps=1&ct=201326592&lm=-1&cl=2&nc=1&ie=utf-8&dyTabStr=MCwyLDMsMSw2LDQsNSw3LDgsOQ%3D%3D&word=apple+tree'
+
+response = requests.get(url, headers = headers)
+content = response.content.decode('utf8')
+html = etree.HTML(content)
+result = etree.tostring(html,encoding='utf8').decode('utf8')
+
+img_urls = html.xpath('//div[@class="imgbox"]/div/a/img/@data-imgurl')
+for img_url in img_urls:
+   img = etree.tostring(img_url,encoding='utf8').decode('utf8')
+   print(img)
